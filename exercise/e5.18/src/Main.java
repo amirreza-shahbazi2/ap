@@ -17,7 +17,7 @@ public class Main {
                 }
             }
         }
-        for(int i = 0; i<strArr.length; i++){
+        for(int i = 0; i<strArr.length;i++){
             System.out.println(strArr[i]);
         }
     }
