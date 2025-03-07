@@ -10,7 +10,7 @@ public class Main {
         } else {
             while (number > 0) {
                 int digit = number % 2;
-                System.out.println(digit);
+                System.out.println(digit) ;
                 number /= 2;
             }
         }
