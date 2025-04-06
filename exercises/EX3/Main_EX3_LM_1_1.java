@@ -1,4 +1,4 @@
-package exercises.ex2;
+package exercises.EX3;
 class Book{
     private String name;
     private String author;
