@@ -1,7 +1,5 @@
 package exercises.EX3;
 
-import exercises.ex5.Student;
-
 public class Main_EX3_LM_1_3 {
     public static Student searchbyname(String firstname, String lastname, Student[] students){
         for (Student student : students) {
@@ -25,8 +23,5 @@ public class Main_EX3_LM_1_3 {
         else{
             System.out.println("student not found");
         }
-
-
     }
-
 }
