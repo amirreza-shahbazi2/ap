@@ -85,16 +85,16 @@ public class Main_EX3_LM_2_1 {
 
            List<test.BookLoan> loans = new ArrayList<>();
 
-           loans.add(new test.BookLoan(book1, student1, "1402/01/15", "1402/02/15"));
-           loans.add(new test.BookLoan(book2, student2, "1402/01/20", "1402/02/20"));
+           loans.add(new BookLoan(book1, student1, "1402/01/15", "1402/02/15"));
+           loans.add(new BookLoan(book2, student2, "1402/01/20", "1402/02/20"));
 
            saveLoansToFile(loans, "loans.csv");
 
-           List<test.BookLoan> loadedLoans = loadLoansFromFile("loans.csv");
+           List<bookLoan> loadedLoans = loadLoansFromFile("loans.csv");
 
 
            System.out.println("\nloan list");
-           for (test.BookLoan loan : loadedLoans) {
+           for (BookLoan loan : loadedLoans) {
                System.out.println(loan);
            }
        }
