@@ -115,9 +115,15 @@ public class Main_midterm_project {
         public String getFirstname() {
             return firstname;
         }
+        public void setFirstname(String firstname) {
+            this.firstname = firstname;
+        }
 
         public String getLastname() {
             return lastname;
+        }
+        public void setLastname(String lastname) {
+            this.lastname = lastname;
         }
 
         public String getEmployeeID() {
@@ -203,8 +209,8 @@ public class Main_midterm_project {
 
 
         public String toString() {
-            return "name of book: " + book1.getName() + "student ID: " + student1.getStudentid() + "date of loan: " + getLoan_Date() +
-                    "date of return; " + getRecivedate() + (isreturned() ? "actual date of return" + getActual_returndate()
+            return "name of book: " + book1.getName() + " student ID: " + student1.getStudentid() + " date of loan: " + getLoan_Date() +
+                    " date of return; " + getRecivedate() + (isreturned() ? " actual date of return" + getActual_returndate()
                     : "have not returned yet");
         }
     }
@@ -813,9 +819,13 @@ public class Main_midterm_project {
 
         private static void updatePersonalInfo(Librarian librarian) {
             System.out.print("new first name: ");
-            librarian.firstname = scanner.next();
+            String firstName = scanner.next();
+            librarian.setFirstname(firstName);
             System.out.print("new last name: ");
+            String lastName = scanner.next();
+            librarian.setLastname(lastName);
             librarian.lastname = scanner.next();
+
             System.out.println("personal info edited.");
         }
 
