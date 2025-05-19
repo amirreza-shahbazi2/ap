@@ -441,7 +441,7 @@ public class Main_midterm_project {
         public static void saveBooks(List<Book> books) {
             try (PrintWriter pw = new PrintWriter(new FileWriter(BOOKS_FILE))) {
                 for (Book b : books) {
-                    pw.println(b.getName() + ";" + b.getAuthor() + ";" + b.getPublicyear() + ";" + b.getPagecount());
+                    pw.println(b.getName() + ";" + b.getAuthor() + ";" + b.getPagecount() + ";" + b.getPublicyear());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -547,33 +547,33 @@ public class Main_midterm_project {
             }
         }
 
-//        public static List<Loan> loadLoans(List<Book> books, List<Student> students, List<Librarian> librarians) {
-//            List<Loan> loans = new ArrayList<>();
-//            try (Scanner scanner = new Scanner(new FileReader(LOANS_FILE))) {
-//                while (scanner.hasNextLine()) {
-//                    String[] data = scanner.nextLine().split(";");
-//
-//                    Book book = findBookByTitle(books, data[0]);
-//                    Student student = findStudentById(students, data[1]);
-//                    Librarian loaner = findLibrarianById(librarians, data[2]);
-//
-//                    LocalDate loanDate = LocalDate.parse(data[3]);
-//                    LocalDate dueDate = LocalDate.parse(data[4]);
-//                    LocalDate returnDate = data[5].equals("null") ? null : LocalDate.parse(data[5]);
-//                    Librarian receiver = data[6].equals("null") ? null : findLibrarianById(librarians, data[6]);
-//
-//                    if (book != null && student != null && loaner != null) {
-//                        Loan loan = new Loan(book, student, loaner);
-//                        loan.setActual_returndate(returnDate);
-//                        loan.setReturnlibrarian(receiver);
-//                        loans.add(loan);
-//                    }
-//                }
-//            } catch (IOException e) {
-//
-//            }
-//            return loans;
+        public static List<Loan> loadLoans(List<Book> books, List<Student> students, List<Librarian> librarians) {
+            List<Loan> loans = new ArrayList<>();
+            try (Scanner scanner = new Scanner(new FileReader(LOANS_FILE))) {
+                while (scanner.hasNextLine()) {
+                    String[] data = scanner.nextLine().split(";");
 
+                    Book book = findBookByTitle(books, data[0]);
+                    Student student = findStudentById(students, data[1]);
+                    Librarian loaner = findLibrarianById(librarians, data[2]);
+
+                    LocalDate loanDate = LocalDate.parse(data[3]);
+                    LocalDate dueDate = LocalDate.parse(data[4]);
+                    LocalDate returnDate = data[5].equals("null") ? null : LocalDate.parse(data[5]);
+                    Librarian receiver = data[6].equals("null") ? null : findLibrarianById(librarians, data[6]);
+
+                    if (book != null && student != null && loaner != null) {
+                        Loan loan = new Loan(book, student, loaner);
+                        loan.setActual_returndate(returnDate);
+                        loan.setReturnlibrarian(receiver);
+                        loans.add(loan);
+                    }
+                }
+            } catch (IOException e) {
+
+            }
+            return loans;
+        }
         private static Book findBookByTitle(List<Book> books, String title) {
             for (Book b : books) {
                 if (b.getName().equals(title)) return b;
@@ -882,13 +882,13 @@ public class Main_midterm_project {
         List<Book> books = LibraryPersistence.loadBooks();
         List<Student> students = LibraryPersistence.loadStudents();
         List<Librarian> librarians = LibraryPersistence.loadLibrarians();
-//        List<Loan> loans = LibraryPersistence.loadLoans(books, students, librarians);
+        List<Loan> loans = LibraryPersistence.loadLoans(books, students, librarians);
         Manager admin = LibraryPersistence.loadAdmin();
 
         library.setBooks1(books);
         library.setStudents1(students);
         library.setLibrarians1(librarians);
-//        library.setLoans1(loans);
+        library.setLoans1(loans);
         library.setManager1(admin);
 
         if (admin == null) {
