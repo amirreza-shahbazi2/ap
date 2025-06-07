@@ -1,6 +1,8 @@
 package ap.exercises.EX6.scraper.utils;
 
 
+import ap.exercises.EX6.scraper.Conf;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -71,6 +73,11 @@ public final class DirectoryTools {
      * boolean success = DirectoryTools.createDirectory("/tmp/new/path");
      * }</pre>
      */
+    public static void createAllDirectory(){
+        createDirectory(Conf.SAVE_DIRECTORY);
+        createDirectory(Conf.SAVE_SONG_DIRECTORY);
+        createDirectory(Conf.SAVE_IMAGE_DIRECTORY);
+    }
     public static boolean createDirectory(String directoryPath) {
         if (directoryPath == null || directoryPath.trim().isEmpty()) {
             return false;

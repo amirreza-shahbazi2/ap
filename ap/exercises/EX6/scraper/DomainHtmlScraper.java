@@ -1,10 +1,11 @@
 package ap.exercises.EX6.scraper;
 
 import ap.exercises.EX6.scraper.fetcher.HtmlFetcher;
+import ap.exercises.EX6.scraper.fetcher.ImageDownloader;
+import ap.exercises.EX6.scraper.fetcher.MP3Downloader;
 import ap.exercises.EX6.scraper.parser.HtmlParser;
-import ap.exercises.EX6.scraper.store.HtmlFileManager;
+import ap.exercises.EX6.scraper.utils.DirectoryTools;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -57,14 +58,15 @@ public class DomainHtmlScraper {
     private Set<String> visitedUrls;
     private PrintWriter imageLinkWriter;
     private String saveDirectory;
-
+    private PrintWriter audioLinkWriter;
     public DomainHtmlScraper(String domainAddress, String saveDirectory) throws IOException {
         this.domainAddress = domainAddress;
         this.saveDirectory = saveDirectory;
         this.queue = new LinkedList<>();
         this.visitedUrls = new HashSet<>();
+        DirectoryTools.createAllDirectory();
         this.imageLinkWriter = new PrintWriter(Path.of(saveDirectory, "image_links.txt").toString());
-
+        this.audioLinkWriter = new PrintWriter(Path.of(saveDirectory, "audio_links.txt").toString());
 
         URL urlObj = new URL(domainAddress);
         this.domainHost = urlObj.getHost().toLowerCase();
@@ -79,9 +81,15 @@ public class DomainHtmlScraper {
             visitedUrls.add(currentUrl);
 
             fetchAndSave(currentUrl);
+            try {
+                Thread.sleep(Conf.DOWNLOAD_INTERRUPT*1000);
+            } catch (InterruptedException e) {
+                System.out.println("delay interrupted");
+            }
         }
 
         imageLinkWriter.close();
+        audioLinkWriter.close();
         System.out.println("Operation complete");
     }
 
@@ -118,6 +126,13 @@ public class DomainHtmlScraper {
             List<String> imageUrls = HtmlParser.getImageUrlsFromHtmlLines(htmlLines);
             for (String img : imageUrls) {
                 imageLinkWriter.println(img);
+                downloadImage(img);
+            }
+
+            List<String> audioUrls = HtmlParser.getAudioUrlsFromHtmlLines(htmlLines);
+            for (String audio : audioUrls) {
+                audioLinkWriter.println(audio);
+                downloadMp3(audio);
             }
 
             List<String> urls = HtmlParser.getAllUrlsFromList(htmlLines);
@@ -178,6 +193,33 @@ public class DomainHtmlScraper {
             Files.write(targetFile, htmlLines);
         } catch (Exception e) {
             System.out.println("ERROR saving " + pageUrl + " -> " + e.getMessage());
+        }
+    }
+    private void downloadImage(String imageUrl) {
+        try {
+            String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+            if (fileName.isEmpty()) {
+                fileName = "image_" + System.currentTimeMillis() + ".jpg";
+            }
+            String savePath = Path.of(Conf.SAVE_IMAGE_DIRECTORY, fileName).toString();
+            ImageDownloader.downloadImage(imageUrl, savePath);
+            System.out.println("Downloaded image: " + imageUrl + " to " + savePath);
+        } catch (IOException e) {
+            System.err.println("Failed to download image " + imageUrl + ": " + e.getMessage());
+        }
+    }
+
+    private void downloadMp3(String audioUrl) {
+        try {
+            String fileName = audioUrl.substring(audioUrl.lastIndexOf("/") + 1);
+            if (fileName.isEmpty()) {
+                fileName = "audio_" + System.currentTimeMillis() + ".mp3";
+            }
+            String savePath = Path.of(Conf.SAVE_SONG_DIRECTORY, fileName).toString();
+            MP3Downloader.downloadMP3(audioUrl, savePath);
+            System.out.println("Downloaded audio: " + audioUrl + " to " + savePath);
+        } catch (IOException e) {
+            System.err.println("Failed to download audio " + audioUrl + ": " + e.getMessage());
         }
     }
 }

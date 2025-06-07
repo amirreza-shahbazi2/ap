@@ -2,6 +2,8 @@ package ap.exercises.EX6.scraper.parser;
 
 
 
+import ap.exercises.EX6.scraper.Conf;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,7 +19,7 @@ public class HtmlParser {
         int startIndex = htmlLine.indexOf("href=\"");
         if (startIndex >= 0) {
             try {
-                int hrefLength = "href\"".length();
+                int hrefLength = "href=\"".length();
                 int endIndex = htmlLine.indexOf("\"", startIndex + hrefLength + 1);
                 url = htmlLine.substring(startIndex + hrefLength + 1, endIndex);
             } catch (Exception e) {
@@ -41,6 +43,7 @@ public class HtmlParser {
     public static List<String> getAllUrlsFromList(List<String> htmlLines) throws IOException {
         return getAllUrlsFromHtmlLinesStream(htmlLines.stream());
     }
+
     public static List<String> getImageUrlsFromHtmlLines(List<String> htmlLines) {
         return htmlLines.stream()
                 .filter(line -> line.contains("<img"))
@@ -54,7 +57,39 @@ public class HtmlParser {
         if (startIndex >= 0) {
             try {
                 int endIndex = line.indexOf("\"", startIndex + 5);
-                return line.substring(startIndex + 5, endIndex);
+                String imageUrl = line.substring(startIndex + 5, endIndex);
+                if (!imageUrl.startsWith("http://") && !imageUrl.startsWith("https://")) {
+                    return Conf.DOMAIN_ADDRESS + (imageUrl.startsWith("/") ? "" : "/") + imageUrl;
+                }
+                return imageUrl;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
+    }
+    public static List<String> getAudioUrlsFromHtmlLines(List<String> htmlLines) {
+        return htmlLines.stream()
+                .filter(line -> line.toLowerCase().contains(".mp3"))
+                .map(HtmlParser::getAudioUrlFromLine)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    public static String getAudioUrlFromLine(String line) {
+        int startIndex = line.indexOf("href=\"");
+        if (startIndex >= 0) {
+            try {
+                int hrefLength = "href=\"".length();
+                int endIndex = line.indexOf("\"", startIndex + hrefLength);
+                String audioUrl = line.substring(startIndex + hrefLength, endIndex);
+                if (audioUrl.toLowerCase().endsWith(".mp3")) {
+                    if (!audioUrl.startsWith("http://") && !audioUrl.startsWith("https://")) {
+                        return Conf.DOMAIN_ADDRESS + (audioUrl.startsWith("http://") ? "" : "/") + audioUrl;
+                    }
+                    return audioUrl;
+                }
+
             } catch (Exception e) {
                 return null;
             }
