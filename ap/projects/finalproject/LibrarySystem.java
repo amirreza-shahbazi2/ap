@@ -6,10 +6,11 @@ import ap.projects.Loan;
 import ap.projects.Manager;
 import ap.projects.Student;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LibrarySystem {
+public class LibrarySystem implements Serializable {
     private List<User> users=new ArrayList<>();
     private List<Book1> books=new ArrayList<>();
     private List<Student1> students=new ArrayList<>();
@@ -43,7 +44,8 @@ public class LibrarySystem {
 
     public Student1 authenticateStudent(String username, String password) {
         return students.stream()
-                .filter(s -> s.getUsername().equals(username) && s.getPassword().equals(password))
+                .filter(s -> s.getUsername().equals(username) && s.getPassword().equals(password)
+                && s.isActive())
                 .findFirst()
                 .orElse(null);
     }

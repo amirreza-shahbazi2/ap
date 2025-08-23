@@ -19,11 +19,14 @@ public class MenuHandler {
             System.out.println("\n=== University Library Management System ===");
             System.out.println("1. Student Registration");
             System.out.println("2. Student Login");
-            System.out.println("3. View Registered Student Count");
-            System.out.println("4. Exit");
+            System.out.println("3. log in as a guest student");
+            System.out.println("4. log in as a librarian");
+            System.out.println("5. loh in as a manager");
+//            System.out.println("3. View Registered Student Count");
+            System.out.println("6. Exit");
             System.out.print("Please enter your choice: ");
 
-            int choice = getIntInput(1, 5);
+            int choice = getIntInput(1, 6);
 
             switch (choice) {
                 case 1:
@@ -33,9 +36,15 @@ public class MenuHandler {
                     handleStudentLogin();
                     break;
                 case 3:
-                    displayStudentCount();
+                    displayguestmenu();
                     break;
                 case 4:
+                    dispaylibrarianmenu();
+                    break;
+                case 5:
+                    displaymanagermenu();
+                    break;
+                case 6:
                     System.out.println("Exiting system. Goodbye!");
                     return;
                 default:
@@ -43,6 +52,35 @@ public class MenuHandler {
             }
             System.out.println("___________________________");
         }
+    }
+
+    private void displayguestmenu() {
+        System.out.println();
+        System.out.println("1. display registered student count");
+        System.out.println("2. search book with title");
+        System.out.println("3. view statistical information");
+        System.out.println("4. exit");
+        System.out.print("Please enter your choice: ");
+        int choice = getIntInput(1, 4);
+        switch (choice) {
+            case 1:
+                displayStudentCount();
+                break;
+                case 2:
+
+                    break;
+                    case 3:
+
+                        break;
+                        case 4:
+                            System.out.println("Exiting system. Goodbye!");
+                            return;
+            default:
+                System.out.println("Invalid option! Please try again.");
+        }
+        System.out.println("___________________________");
+
+
     }
 
     private void displayStudentCount() {
@@ -84,6 +122,48 @@ public class MenuHandler {
             displayLoggedInStudentMenu();
         } else {
             System.out.println("Invalid username or password. Please try again.");
+        }
+    }
+    private void displayLoggedInStudentMenu() {
+        System.out.println("\n--- Logged In Student Menu ---");
+        System.out.println("1. search a book");
+        System.out.println("2. loan  book");
+        System.out.println("3. return book");
+        System.out.println("4. exit");
+        System.out.print("Please enter your choice: ");
+
+        int choice = getIntInput(1, 6);
+
+        switch (choice) {
+            case 1:
+                librarySystem.searchBooks();
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+                System.out.println("Exiting system. Goodbye!");
+                return;
+            default:
+                System.out.println("Invalid option! Please try again.");
+        }
+
+
+    }
+    private int getIntInput(int min, int max) {
+        while (true) {
+            try {
+                int input = Integer.parseInt(scanner.nextLine());
+                if (input >= min && input <= max) {
+                    return input;
+                }
+                System.out.printf("Please enter a number between %d and %d: ", min, max);
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a number: ");
+            }
         }
     }
 
