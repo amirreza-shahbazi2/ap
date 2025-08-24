@@ -169,5 +169,9 @@ public class MenuHandler {
             }
         }
     }
+    private void displayStudentCount() {
+        int studentCount = librarySystem.getStudentCount();
+        System.out.println("\nTotal registered students: " + studentCount);
+    }
 
   }

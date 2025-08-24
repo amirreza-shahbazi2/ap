@@ -30,10 +30,14 @@ public class Student1 extends User {
     public String getPassword() {
         return password;
     }
+    public List<Loan1> getLoan1s() {
+        return loan1s;
+    }
 
     public String toString() {
-        return "Name: " + name +
-                " | Student ID: " + studentId +
-                " | Username: " + username;
+        return "Name: " + this.getName() +
+                " | Student ID: " + this.getStudentId() +
+                " | Username: " + this.getUsername()+
+                " | active: "+ this.isActive();
     }
 }
