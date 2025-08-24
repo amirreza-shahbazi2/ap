@@ -40,5 +40,9 @@ public class Book1 {
                 " | publication year:" + getPublicyear()+
                 " | isAvailable:" + (isAvailable() ? "Yes" : "No");
     }
+    public String toStringGuest(){
+        return "name of the Book:" + getName() + " | author of the Book:" + getAuthor() +
+                " | publication year:" + getPublicyear();
+    }
 
 }

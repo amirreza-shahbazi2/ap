@@ -67,7 +67,7 @@ public class MenuHandler {
                 displayStudentCount();
                 break;
             case 2:
-
+                librarySystem.searchBookwithtitle();
                 break;
             case 3:
 

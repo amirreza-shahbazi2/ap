@@ -138,5 +138,20 @@ public class LibrarySystem implements Serializable {
     public List<Loan1> getLoansRequest(){
         return loans;
     }
+
+    public void searchBookwithtitle() {
+        System.out.println("enter the title of the book");
+        String title = scanner.nextLine().toLowerCase();
+        boolean found = false;
+        for (Book1 b : books) {
+            if (b.getName().toLowerCase().equals(title)) {
+                System.out.println(b.toStringGuest());
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No such book found.");
+        }
+    }
 }
 
