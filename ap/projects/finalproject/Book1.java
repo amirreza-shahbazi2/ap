@@ -37,7 +37,8 @@ public class Book1 {
 
     public String toString() {
         return "name of the Book:" + getName() + " | author of the Book:" + getAuthor() +
-                " | publication year:" + getPublicyear();
+                " | publication year:" + getPublicyear()+
+                " | isAvailable:" + (isAvailable() ? "Yes" : "No");
     }
 
 }

@@ -1,16 +1,14 @@
 package ap.projects.finalproject;
 
-import ap.projects.*;
-import ap.projects.Librarian;
-import ap.projects.Loan;
 import ap.projects.Manager;
-import ap.projects.Student;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class LibrarySystem implements Serializable {
+    Scanner scanner = new Scanner(System.in);
     private List<User> users=new ArrayList<>();
     private List<Book1> books=new ArrayList<>();
     private List<Student1> students=new ArrayList<>();
@@ -70,6 +68,36 @@ public class LibrarySystem implements Serializable {
 
     public int getStudentCount() {
         return students.size();
+    }
+
+    public void searchBook() {
+        System.out.println("if you want leave a field empty books wont be filtered with that field.");
+        System.out.println("Enter the title of book (or press Enter to skip) ");
+        String title = scanner.nextLine().trim().toLowerCase();
+        System.out.println("Enter author name (or press Enter to skip) : ");
+        String author = scanner.nextLine().trim().toLowerCase();
+        System.out.println("Enter year of publication (or press Enter to skip) : ");
+        String Publicyear = scanner.nextLine().trim();
+
+        boolean found = false;
+        for (Book1 b : books) {
+            boolean synk=false;
+            if (!title.isEmpty()&& b.getName().toLowerCase().contains(title)) {synk=true;}
+            if (!author.isEmpty() && b.getAuthor().toLowerCase().contains(author)) {synk=true;}
+            if (!Publicyear.isEmpty()) {
+                int year = Integer.parseInt(Publicyear);
+                if (b.getPublicyear() == year) {synk=true;}
+            }
+            if (synk) {
+                System.out.println(b.toString());
+                found = true;
+
+            }
+
+        }
+        if (!found) {
+            System.out.println("No such book found.");
+        }
     }
 }
 
