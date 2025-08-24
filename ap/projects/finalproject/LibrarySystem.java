@@ -153,5 +153,27 @@ public class LibrarySystem implements Serializable {
             System.out.println("No such book found.");
         }
     }
+
+    public void wiewStatisticalInfo() {
+        System.out.println("count of all students: " + students.size());
+        System.out.println("count of all books: " + books.size());
+        System.out.println("count of all loans: " + loans.size());
+        if (loans.isEmpty()) {
+            System.out.println("No book borrowed.");
+        }
+        else {
+            List<Loan1> activloans = new ArrayList<>();
+            for (Loan1 loan : loans) {
+                if (loan.isApproved()&& loan.getReturnDate()==null){
+                    activloans.add(loan);
+                }
+            }
+            System.out.println("count of books which borrowed: "+activloans.size());
+            for (Loan1 l : activloans) {
+                System.out.println(l.getBook1().getName()+"( student: "+l.getStudent1().getName());
+
+            }
+        }
+    }
 }
 

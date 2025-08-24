@@ -70,6 +70,7 @@ public class MenuHandler {
                 librarySystem.searchBookwithtitle();
                 break;
             case 3:
+                librarySystem.wiewStatisticalInfo();
 
                 break;
             case 4:
