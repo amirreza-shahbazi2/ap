@@ -1,8 +1,7 @@
 package ap.projects.finalproject;
 
-import ap.projects.Manager;
-
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +13,7 @@ public class LibrarySystem implements Serializable {
     private List<Student1> students=new ArrayList<>();
     private List<Librarian1> librarians=new ArrayList<>();
     private List<Loan1> loans=new ArrayList<>();
-    private Manager manager1;
+    private Manager1 manager1;
 
 
     public void registerbook(String name,String author,int year){
@@ -98,6 +97,46 @@ public class LibrarySystem implements Serializable {
         if (!found) {
             System.out.println("No such book found.");
         }
+    }
+    public Student1 searchStudentbyID(String studentId) {
+        for (Student1 student : students) {
+            if (student.getStudentId().equals(studentId)) {
+                return student;
+            }
+        }
+        return null;
+    }
+
+    public  void requestLoan(Student1 student) {
+        for (int i=0 ; i<books.size() ; i++){
+            System.out.println((i+1) + ". " + books.get(i).getName());
+        }
+        System.out.println("Enter number of the book you want to request loan : ");
+        int choice = Integer.parseInt(scanner.nextLine()) - 1;
+
+        if (choice < 0 || choice >= books.size()){
+            System.out.println("Invalid number .");
+            return;
+        }
+
+        Book1 thebook = books.get(choice);
+        if (!thebook.isAvailable()){
+            System.out.println("book is not available ");
+            return;
+        }
+
+        System.out.println("Enter start date (YYYY-MM-DD) : ");
+        LocalDate start = LocalDate.parse(scanner.nextLine());
+        System.out.println("Enter end date (YYYY-MM-DD) : ");
+        LocalDate end = LocalDate.parse(scanner.nextLine());
+
+        Loan1 request = new Loan1(thebook,student,start,end);
+        loans.add(request);
+        System.out.println("Your request has been registered and is under rewie .");
+
+    }
+    public List<Loan1> getLoansRequest(){
+        return loans;
     }
 }
 

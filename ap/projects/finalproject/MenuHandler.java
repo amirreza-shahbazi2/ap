@@ -66,26 +66,21 @@ public class MenuHandler {
             case 1:
                 displayStudentCount();
                 break;
-                case 2:
+            case 2:
 
-                    break;
-                    case 3:
+                break;
+            case 3:
 
-                        break;
-                        case 4:
-                            System.out.println("Exiting system. Goodbye!");
-                            return;
+                break;
+            case 4:
+                System.out.println("Exiting system. Goodbye!");
+                return;
             default:
                 System.out.println("Invalid option! Please try again.");
         }
         System.out.println("___________________________");
 
 
-    }
-
-    private void displayStudentCount() {
-        int studentCount = librarySystem.getStudentCount();
-        System.out.println("\nTotal registered students: " + studentCount);
     }
 
     private void handleStudentRegistration() {
@@ -132,14 +127,21 @@ public class MenuHandler {
         System.out.println("4. exit");
         System.out.print("Please enter your choice: ");
 
-        int choice = getIntInput(1, 6);
+        int choice = getIntInput(1, 4);
 
         switch (choice) {
             case 1:
-                librarySystem.searchBooks();
+                librarySystem.searchBook();
                 break;
             case 2:
-
+                System.out.println("enter student ID");
+                String studentId = scanner.nextLine();
+                Student1 st=librarySystem.searchStudentbyID(studentId);
+                if (st != null) {
+                    librarySystem.requestLoan(st);
+                }else {
+                    System.out.println("Invalid student ID. Please try again.");
+                }
                 break;
             case 3:
 
@@ -153,6 +155,7 @@ public class MenuHandler {
 
 
     }
+
     private int getIntInput(int min, int max) {
         while (true) {
             try {
