@@ -1,19 +1,21 @@
 package ap.projects.finalproject;
 
 public class Librarian1 extends User {
-    private String name;
+    private String nameLibrarian;
 
 
     public Librarian1(String name, String username, String password) {
         super(username, password);
-        this.name = name;
+        this.nameLibrarian = name;
 
     }
-    public String getName() {
-        return name;
+    public String getNameLibrarian() {
+        return nameLibrarian;
     }
 
-
+    public String toString(){
+        return " name of Librarian: " + this.nameLibrarian ;
+    }
 
 }
 

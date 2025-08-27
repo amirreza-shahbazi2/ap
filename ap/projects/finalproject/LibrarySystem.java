@@ -8,19 +8,19 @@ import java.util.Scanner;
 
 public class LibrarySystem implements Serializable {
     Scanner scanner = new Scanner(System.in);
-    private List<User> users=new ArrayList<>();
-    private List<Book1> books=new ArrayList<>();
-    private List<Student1> students=new ArrayList<>();
-    private List<Librarian1> librarians=new ArrayList<>();
-    private List<Loan1> loans=new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+    private List<Book1> books = new ArrayList<>();
+    private List<Student1> students = new ArrayList<>();
+    private List<Librarian1> librarians = new ArrayList<>();
+    private List<Loan1> loans = new ArrayList<>();
     private Manager1 manager1;
 
 
-    public void registerbook(String name,String author,int year){
-        books.add(new Book1(name,author,year));
+    public void registerbook(String name, String author, int year) {
+        books.add(new Book1(name, author, year));
     }
 
-//    public User login(String username,String password){
+    //    public User login(String username,String password){
 //        for(Student1 s:students){
 //            if(s.getUsername().equals(username) && s.getPassword().equals(password)){
 //                return s;
@@ -42,7 +42,7 @@ public class LibrarySystem implements Serializable {
     public Student1 authenticateStudent(String username, String password) {
         return students.stream()
                 .filter(s -> s.getUsername().equals(username) && s.getPassword().equals(password)
-                && s.isActive())
+                        && s.isActive())
                 .findFirst()
                 .orElse(null);
     }
@@ -80,12 +80,18 @@ public class LibrarySystem implements Serializable {
 
         boolean found = false;
         for (Book1 b : books) {
-            boolean synk=false;
-            if (!title.isEmpty()&& b.getName().toLowerCase().contains(title)) {synk=true;}
-            if (!author.isEmpty() && b.getAuthor().toLowerCase().contains(author)) {synk=true;}
+            boolean synk = false;
+            if (!title.isEmpty() && b.getName().toLowerCase().contains(title)) {
+                synk = true;
+            }
+            if (!author.isEmpty() && b.getAuthor().toLowerCase().contains(author)) {
+                synk = true;
+            }
             if (!Publicyear.isEmpty()) {
                 int year = Integer.parseInt(Publicyear);
-                if (b.getPublicyear() == year) {synk=true;}
+                if (b.getPublicyear() == year) {
+                    synk = true;
+                }
             }
             if (synk) {
                 System.out.println(b.toString());
@@ -98,6 +104,7 @@ public class LibrarySystem implements Serializable {
             System.out.println("No such book found.");
         }
     }
+
     public Student1 searchStudentbyID(String studentId) {
         for (Student1 student : students) {
             if (student.getStudentId().equals(studentId)) {
@@ -107,20 +114,20 @@ public class LibrarySystem implements Serializable {
         return null;
     }
 
-    public  void requestLoan(Student1 student) {
-        for (int i=0 ; i<books.size() ; i++){
-            System.out.println((i+1) + ". " + books.get(i).getName());
+    public void requestLoan(Student1 student) {
+        for (int i = 0; i < books.size(); i++) {
+            System.out.println((i + 1) + ". " + books.get(i).getName());
         }
         System.out.println("Enter number of the book you want to request loan : ");
         int choice = Integer.parseInt(scanner.nextLine()) - 1;
 
-        if (choice < 0 || choice >= books.size()){
+        if (choice < 0 || choice >= books.size()) {
             System.out.println("Invalid number .");
             return;
         }
 
         Book1 thebook = books.get(choice);
-        if (!thebook.isAvailable()){
+        if (!thebook.isAvailable()) {
             System.out.println("book is not available ");
             return;
         }
@@ -130,12 +137,12 @@ public class LibrarySystem implements Serializable {
         System.out.println("Enter end date (YYYY-MM-DD) : ");
         LocalDate end = LocalDate.parse(scanner.nextLine());
 
-        Loan1 request = new Loan1(thebook,student,start,end);
+        Loan1 request = new Loan1(thebook, student, start, end);
         loans.add(request);
         System.out.println("Your request has been registered and is under rewie .");
 
     }
-    public List<Loan1> getLoansRequest(){
+    public List<Loan1> getLoansRequest() {
         return loans;
     }
 
@@ -160,20 +167,36 @@ public class LibrarySystem implements Serializable {
         System.out.println("count of all loans: " + loans.size());
         if (loans.isEmpty()) {
             System.out.println("No book borrowed.");
-        }
-        else {
+        } else {
             List<Loan1> activloans = new ArrayList<>();
             for (Loan1 loan : loans) {
-                if (loan.isApproved()&& loan.getReturnDate()==null){
+                if (loan.isApproved() && loan.getReturnDate() == null) {
                     activloans.add(loan);
                 }
             }
-            System.out.println("count of books which borrowed: "+activloans.size());
+            System.out.println("count of books which borrowed: " + activloans.size());
             for (Loan1 l : activloans) {
-                System.out.println(l.getBook1().getName()+"( student: "+l.getStudent1().getName());
+                System.out.println(l.getBook1().getName() + "( student: " + l.getStudent1().getName());
 
             }
         }
     }
+
+    public Librarian1 loginLibrarian() {
+        System.out.println("enter your username: ");
+        String username = scanner.nextLine();
+        System.out.println("Enter password : ");
+        String password = scanner.nextLine();
+
+        for (Librarian1 l : librarians) {
+            if (l.getUsername().equals(username) && l.getPassword().equals(password)) {
+                System.out.println(" librarian" + l.getNameLibrarian() + "entered in successfully ");
+                return l;
+            }
+        }
+        System.out.println("Invalid username or password.");
+        return null;
+    }
 }
+
 

@@ -39,7 +39,10 @@ public class MenuHandler {
                     displayguestmenu();
                     break;
                 case 4:
-                    dispaylibrarianmenu();
+                    Librarian1 l =  librarySystem.loginLibrarian();
+                    if (l != null) {
+                        dispaylibrarianmenu();
+                    }
                     break;
                 case 5:
                     displaymanagermenu();
@@ -54,8 +57,43 @@ public class MenuHandler {
         }
     }
 
+    private void dispaylibrarianmenu() {
+        System.out.println("\n=== Librarian menue ===");
+        System.out.println("1. change password");
+        System.out.println("2. register a new book ");
+        System.out.println("3. search and edit book information");
+        System.out.println("4. review ana approve loan reequest");
+        System.out.println("5. view students loan history and stats of students");
+        System.out.println("6. active or diactive students");
+        System.out.println("7. recive returned books");
+        System.out.println("8. exit");
+        System.out.print("Please enter your choice: ");
+        int choice = getIntInput(1, 7);
+        switch (choice) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                System.out.println("Exiting system. Goodbye!");
+                return;
+            default:
+                System.out.println("Invalid option! Please try again.");
+        }
+                System.out.println("___________________________");
+
+    }
+
     private void displayguestmenu() {
-        System.out.println();
+        System.out.println("\n--- guest menu ---");
         System.out.println("1. display registered student count");
         System.out.println("2. search book with title");
         System.out.println("3. view statistical information");
