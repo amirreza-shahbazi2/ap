@@ -197,6 +197,25 @@ public class LibrarySystem implements Serializable {
         System.out.println("Invalid username or password.");
         return null;
     }
+
+    public void changePassword() {
+        System.out.println("enter your current password: ");
+        String password = scanner.nextLine();
+        System.out.println("Enter new password : ");
+        String newPassword = scanner.nextLine();
+        boolean found = false;
+        for (Librarian1 l : librarians) {
+            if (l.getPassword().equals(password)) {
+                l.setPassword(newPassword);
+                found = true;
+                System.out.println("your password has been changed ");
+
+            }
+        }
+        if (!found) {
+            System.out.println("your current password does not match ");
+        }
+    }
 }
 
 

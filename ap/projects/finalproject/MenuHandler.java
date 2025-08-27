@@ -71,6 +71,7 @@ public class MenuHandler {
         int choice = getIntInput(1, 7);
         switch (choice) {
             case 1:
+                librarySystem.changePassword();
                 break;
             case 2:
                 break;
