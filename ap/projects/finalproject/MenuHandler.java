@@ -82,6 +82,7 @@ public class MenuHandler {
                 librarySystem.approveLoan();
                 break;
             case 5:
+                librarySystem.studentLoanHistory();
                 break;
             case 6:
                 break;

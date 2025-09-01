@@ -310,6 +310,39 @@ public class LibrarySystem implements Serializable {
         System.out.println("all loan requests approved ");
          saveloans();
     }
+
+    public void studentLoanHistory() {
+        System.out.println("enter the username of the student: ");
+        String username = scanner.nextLine();
+        List<Loan1> result = new ArrayList<>();
+
+        for (Student1 s : students) {
+            if (s.getUsername().equals(username)) {
+                result = s.getLoan1s();
+            }
+        }
+        if(result.isEmpty()) {
+            System.out.println("No history found");
+            return;
+        }
+        int total=result.size();
+        int delayed=0;
+        int notReturned=0;
+        System.out.println("*** Student loan History : " + username + " ***");
+
+        for (Loan1 l : result) {
+            System.out.println(l.toString());
+            if (l.isApproved()&& l.getReturnDate() == null) {
+                notReturned++;
+            }
+            if (l.getReturnDate() != null && l.getReturnDate().isAfter(l.getEndDate())) {
+                delayed++;
+            }
+        }
+        System.out.println("total loans : " + total);
+        System.out.println("total delayed loans : " + delayed);
+        System.out.println("total notReturned loans : " + notReturned);
+    }
 }
 
 
