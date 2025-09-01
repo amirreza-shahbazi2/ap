@@ -79,6 +79,7 @@ public class MenuHandler {
                 librarySystem.searchandEditbookInfo();
                 break;
             case 4:
+                librarySystem.approveLoan();
                 break;
             case 5:
                 break;

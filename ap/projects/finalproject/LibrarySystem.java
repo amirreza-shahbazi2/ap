@@ -285,6 +285,31 @@ public class LibrarySystem implements Serializable {
         System.out.println("book edited successfully");
 
     }
+
+    public void approveLoan() {
+         LocalDate today = LocalDate.now();
+         List<Loan1> result = new ArrayList<>();
+
+         for (Loan1 l : loans) {
+             if (!l.isApproved() && l.getReturnDate() == null) {
+                 if (l.getStartDate().equals(today)&&l.getStartDate().equals(today.minusDays(1))) {
+                  result.add(l);
+                 }
+
+             }
+         }
+         if (loans.isEmpty()) {
+             System.out.println("No book request loan.");
+         }
+         for (Loan1 l : result) {
+             l.setApprovedtrue();
+             System.out.println(l.toString());
+             l.getBook1().setAvailable(false);
+
+         }
+        System.out.println("all loan requests approved ");
+         saveloans();
+    }
 }
 
 

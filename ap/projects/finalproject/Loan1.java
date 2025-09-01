@@ -9,7 +9,7 @@ public class Loan1 implements Serializable {
     private Student1 student1;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Date returnDate;
+    private LocalDate returnDate;
     private boolean approved;
     public Loan1(Book1 book1, Student1 student1, LocalDate startDate, LocalDate endDate) {
         this.book1 = book1;
@@ -31,10 +31,10 @@ public class Loan1 implements Serializable {
     public LocalDate getEndDate() {
         return endDate;
     }
-    public Date getReturnDate() {
+    public LocalDate getReturnDate() {
         return returnDate;
     }
-    public void setReturnDate(Date returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
     public boolean isApproved() {
