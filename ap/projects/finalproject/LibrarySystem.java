@@ -209,7 +209,7 @@ public class LibrarySystem implements Serializable {
                 l.setPassword(newPassword);
                 found = true;
                 System.out.println("your password has been changed ");
-//                savelibrarian();
+                savelibrarian();
             }
         }
         if (!found) {
@@ -233,9 +233,58 @@ public class LibrarySystem implements Serializable {
         Book1 newbook = new Book1(name, author, year);
         books.add(newbook);
         System.out.println("book added successfully");
-//        savebook();
+        savebook();
     }
 
+    public void searchandEditbookInfo() {
+        System.out.println("enter the name of the book: ");
+        String name = scanner.nextLine();
+        Book1 theboook = null;
+        boolean found = false;
+        for (Book1 b : books) {
+            if (b.getName().equals(name)) {
+                theboook = b;
+                System.out.println(b.toString());
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No book found");
+            return;
+        }
+        System.out.println("enter the number of option you want to edit: ");
+        System.out.println("1. book name");
+        System.out.println("2. book author");
+        System.out.println("3. book year");
+        System.out.println("4.return");
+        int opt = Integer.parseInt(scanner.nextLine());
+        switch (opt) {
+            case 1:
+                System.out.println("enter new name of the book: ");
+                String newName = scanner.nextLine();
+                theboook.setName(newName);
+                break;
+            case 2:
+                System.out.println("enter new author of the book: ");
+                String newAuthor = scanner.nextLine();
+                theboook.setAuthor(newAuthor);
+                break;
+            case 3:
+                System.out.println("enter new year of publication of the book: ");
+                int newYear = Integer.parseInt(scanner.nextLine());
+                theboook.setPublicyear(newYear);
+                break;
+            case 4:
+
+                return;
+            default:
+                System.out.println("Invalid option");
+                break;
+        }
+        savebook();
+        System.out.println("book edited successfully");
+
+    }
 }
 
 

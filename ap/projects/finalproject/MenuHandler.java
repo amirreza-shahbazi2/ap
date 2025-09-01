@@ -22,7 +22,6 @@ public class MenuHandler {
             System.out.println("3. log in as a guest student");
             System.out.println("4. log in as a librarian");
             System.out.println("5. loh in as a manager");
-//            System.out.println("3. View Registered Student Count");
             System.out.println("6. Exit");
             System.out.print("Please enter your choice: ");
 
@@ -77,6 +76,7 @@ public class MenuHandler {
                 librarySystem.addanewabook();
                 break;
             case 3:
+                librarySystem.searchandEditbookInfo();
                 break;
             case 4:
                 break;
@@ -160,6 +160,7 @@ public class MenuHandler {
             System.out.println("Invalid username or password. Please try again.");
         }
     }
+
     private void displayLoggedInStudentMenu() {
         System.out.println("\n--- Logged In Student Menu ---");
         System.out.println("1. search a book");
@@ -193,8 +194,6 @@ public class MenuHandler {
             default:
                 System.out.println("Invalid option! Please try again.");
         }
-
-
     }
 
     private int getIntInput(int min, int max) {
