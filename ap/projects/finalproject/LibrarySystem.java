@@ -15,10 +15,10 @@ public class LibrarySystem implements Serializable {
     private List<Loan1> loans = new ArrayList<>();
     private Manager1 manager1;
 
-
-    public void registerbook(String name, String author, int year) {
-        books.add(new Book1(name, author, year));
-    }
+//
+//    public void registerbook(String name, String author, int year) {
+//        books.add(new Book1(name, author, year));
+//    }
 
     //    public User login(String username,String password){
 //        for(Student1 s:students){
@@ -209,13 +209,33 @@ public class LibrarySystem implements Serializable {
                 l.setPassword(newPassword);
                 found = true;
                 System.out.println("your password has been changed ");
-
+//                savelibrarian();
             }
         }
         if (!found) {
             System.out.println("your current password does not match ");
         }
     }
+
+    public void addanewabook() {
+        System.out.println("enter the name of the book: ");
+        String name = scanner.nextLine();
+        System.out.println("enter the author of the book: ");
+        String author = scanner.nextLine();
+       for (Book1 b : books) {
+           if (b.getName().equals(name)&& b.getAuthor().equals(author)) {
+               System.out.println("book already exists");
+               return;
+           }
+       }
+        System.out.println("Enter the year of publication of the book: ");
+        int year = Integer.parseInt(scanner.nextLine());
+        Book1 newbook = new Book1(name, author, year);
+        books.add(newbook);
+        System.out.println("book added successfully");
+//        savebook();
+    }
+
 }
 
 

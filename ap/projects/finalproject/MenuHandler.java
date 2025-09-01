@@ -74,6 +74,7 @@ public class MenuHandler {
                 librarySystem.changePassword();
                 break;
             case 2:
+                librarySystem.addanewabook();
                 break;
             case 3:
                 break;
