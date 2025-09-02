@@ -196,7 +196,7 @@ public class LibrarySystem implements Serializable {
 
         for (Librarian1 l : librarians) {
             if (l.getUsername().equals(username) && l.getPassword().equals(password)) {
-                System.out.println(" librarian" + l.getNameLibrarian() + "entered in successfully ");
+                System.out.println(" librarian" + l.getUsername() + "entered in successfully ");
                 return l;
             }
         }
@@ -395,6 +395,25 @@ public class LibrarySystem implements Serializable {
         if (!found) {
             System.out.println("no such a student or book found");
         }
+    }
+
+    public void addLibrarian() {
+
+        System.out.println("enter librarian's username: ");
+        String username = scanner.nextLine();
+        System.out.println("enter librarian's password: ");
+        String password = scanner.nextLine();
+
+        for (Librarian1 l : librarians) {
+            if (l.getUsername().equals(username) && l.getPassword().equals(password)) {
+                System.out.println("librarian's  already exists");
+                return;
+            }
+        }
+        Librarian1 librarian = new Librarian1( username, password);
+        librarians.add(librarian);
+        System.out.println("librarians added successfully");
+        savelibrarian();
     }
 }
 

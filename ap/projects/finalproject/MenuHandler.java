@@ -56,6 +56,39 @@ public class MenuHandler {
         }
     }
 
+    private void displaymanagermenu() {
+        System.out.println("\n--- manager menu ---");
+        System.out.println("1. add new librarian");
+        System.out.println("2. view librarian status");
+        System.out.println("3. view statistical info about book loans");
+        System.out.println("4. view statistical info about students");
+        System.out.println("5. exit");
+        System.out.print("Please enter your choice: ");
+        int choice = getIntInput(1, 4);
+        switch (choice) {
+            case 1:
+                librarySystem.addLibrarian();
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+                System.out.println("Exiting system. Goodbye!");
+                return;
+            default:
+                System.out.println("Invalid option! Please try again.");
+        }
+        System.out.println("___________________________");
+
+
+    }
+
     private void dispaylibrarianmenu() {
         System.out.println("\n=== Librarian menu ===");
         System.out.println("1. change password");
