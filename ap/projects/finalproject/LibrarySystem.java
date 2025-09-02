@@ -115,6 +115,11 @@ public class LibrarySystem implements Serializable {
     }
 
     public void requestLoan(Student1 student) {
+        if (!student.isActive()) {
+            System.out.println("This student is not active");
+            return;
+        }
+
         for (int i = 0; i < books.size(); i++) {
             System.out.println((i + 1) + ". " + books.get(i).getName());
         }
@@ -142,6 +147,7 @@ public class LibrarySystem implements Serializable {
         System.out.println("Your request has been registered and is under rewie .");
 
     }
+
     public List<Loan1> getLoansRequest() {
         return loans;
     }
@@ -342,6 +348,30 @@ public class LibrarySystem implements Serializable {
         System.out.println("total loans : " + total);
         System.out.println("total delayed loans : " + delayed);
         System.out.println("total notReturned loans : " + notReturned);
+    }
+
+    public void toggleStudentStatus() {
+        for (int i = 0; i < students.size(); i++) {
+            Student1 s = students.get(i);
+            System.out.println(i + 1 + ". " + s.getUsername() + " | is active: " + s.isActive());
+
+        }
+        System.out.println("enter the number of option you want to toggle (0 to exit): ");
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        if (choice == 0) {
+            return;
+        }
+        if (choice < 1 || choice > students.size()) {
+            System.out.println("Invalid choice . ");
+            return;
+        }
+        Student1 student = students.get(choice - 1);
+        student.setActive(!student.isActive());
+        saveStudent();
+        System.out.println("student status changed successfully ");
+
+
     }
 }
 

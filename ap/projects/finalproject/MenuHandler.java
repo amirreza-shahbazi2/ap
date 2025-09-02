@@ -85,8 +85,11 @@ public class MenuHandler {
                 librarySystem.studentLoanHistory();
                 break;
             case 6:
+                librarySystem.toggleStudentStatus();
                 break;
             case 7:
+                break;
+            case 8:
                 System.out.println("Exiting system. Goodbye!");
                 return;
             default:
