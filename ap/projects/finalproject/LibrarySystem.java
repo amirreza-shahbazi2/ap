@@ -373,6 +373,29 @@ public class LibrarySystem implements Serializable {
 
 
     }
+
+    public void receiveReturnBook() {
+        System.out.println("enter students username: ");
+        String username = scanner.nextLine();
+        System.out.println("enter title of book student want to return: ");
+        String title = scanner.nextLine();
+        boolean found = false;
+
+        for (Loan1 l : loans) {
+            if (l.getStudent1().getUsername().equals(username)) {
+                if (l.getBook1().getName().equals(title) &&l.getReturnDate() == null && l.isApproved()) {
+                    l.setReturnDate(LocalDate.now());
+                    l.getBook1().setAvailable(true);
+                    saveloans();
+                    found = true;
+                    System.out.println("student returned successfully");
+                }
+            }
+        }
+        if (!found) {
+            System.out.println("no such a student or book found");
+        }
+    }
 }
 
 

@@ -38,7 +38,7 @@ public class MenuHandler {
                     displayguestmenu();
                     break;
                 case 4:
-                    Librarian1 l =  librarySystem.loginLibrarian();
+                    Librarian1 l = librarySystem.loginLibrarian();
                     if (l != null) {
                         dispaylibrarianmenu();
                     }
@@ -57,14 +57,14 @@ public class MenuHandler {
     }
 
     private void dispaylibrarianmenu() {
-        System.out.println("\n=== Librarian menue ===");
+        System.out.println("\n=== Librarian menu ===");
         System.out.println("1. change password");
         System.out.println("2. register a new book ");
         System.out.println("3. search and edit book information");
-        System.out.println("4. review ana approve loan reequest");
+        System.out.println("4. approve loan request");
         System.out.println("5. view students loan history and stats of students");
-        System.out.println("6. active or diactive students");
-        System.out.println("7. recive returned books");
+        System.out.println("6. active or di active students");
+        System.out.println("7. receive returned books");
         System.out.println("8. exit");
         System.out.print("Please enter your choice: ");
         int choice = getIntInput(1, 7);
@@ -88,6 +88,7 @@ public class MenuHandler {
                 librarySystem.toggleStudentStatus();
                 break;
             case 7:
+                librarySystem.receiveReturnBook();
                 break;
             case 8:
                 System.out.println("Exiting system. Goodbye!");
@@ -95,7 +96,7 @@ public class MenuHandler {
             default:
                 System.out.println("Invalid option! Please try again.");
         }
-                System.out.println("___________________________");
+        System.out.println("___________________________");
 
     }
 
@@ -170,8 +171,7 @@ public class MenuHandler {
         System.out.println("\n--- Logged In Student Menu ---");
         System.out.println("1. search a book");
         System.out.println("2. loan  book");
-        System.out.println("3. return book");
-        System.out.println("4. exit");
+        System.out.println("3. exit");
         System.out.print("Please enter your choice: ");
 
         int choice = getIntInput(1, 4);
@@ -183,17 +183,14 @@ public class MenuHandler {
             case 2:
                 System.out.println("enter student ID");
                 String studentId = scanner.nextLine();
-                Student1 st=librarySystem.searchStudentbyID(studentId);
+                Student1 st = librarySystem.searchStudentbyID(studentId);
                 if (st != null) {
                     librarySystem.requestLoan(st);
-                }else {
+                } else {
                     System.out.println("Invalid student ID. Please try again.");
                 }
                 break;
             case 3:
-
-                break;
-            case 4:
                 System.out.println("Exiting system. Goodbye!");
                 return;
             default:
@@ -214,9 +211,10 @@ public class MenuHandler {
             }
         }
     }
+
     private void displayStudentCount() {
         int studentCount = librarySystem.getStudentCount();
         System.out.println("\nTotal registered students: " + studentCount);
     }
 
-  }
+}
