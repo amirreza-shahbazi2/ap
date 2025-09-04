@@ -136,6 +136,8 @@ public class LibrarySystem implements Serializable {
             System.out.println("book is not available ");
             return;
         }
+        LocalDate today = LocalDate.now();
+        System.out.println("today id: "+today);
 
         System.out.println("Enter start date (YYYY-MM-DD) : ");
         LocalDate start = LocalDate.parse(scanner.nextLine());
@@ -182,7 +184,7 @@ public class LibrarySystem implements Serializable {
             }
             System.out.println("count of books which borrowed: " + activloans.size());
             for (Loan1 l : activloans) {
-                System.out.println(l.getBook1().getName() + "( student: " + l.getStudent1().getName());
+                System.out.println("book name: "+l.getBook1().getName() + " (student: " + l.getStudent1().getName()+")");
 
             }
         }
@@ -236,7 +238,7 @@ public class LibrarySystem implements Serializable {
        }
         System.out.println("Enter the year of publication of the book: ");
         int year = Integer.parseInt(scanner.nextLine());
-        Book1 newbook = new Book1(name, author, year);
+        Book1 newbook = new Book1(name, author, year, loginLibrarian().getUsername());
         books.add(newbook);
         System.out.println("book added successfully");
         savebook();
@@ -298,19 +300,20 @@ public class LibrarySystem implements Serializable {
 
          for (Loan1 l : loans) {
              if (!l.isApproved() && l.getReturnDate() == null) {
-                 if (l.getStartDate().equals(today)&&l.getStartDate().equals(today.minusDays(1))) {
+                 if (l.getStartDate().equals(today) || l.getStartDate().equals(today.minusDays(1))) {
                   result.add(l);
                  }
 
              }
          }
-         if (loans.isEmpty()) {
+         if (result.isEmpty()) {
              System.out.println("No book request loan.");
          }
          for (Loan1 l : result) {
              l.setApprovedtrue();
-             System.out.println(l.toString());
              l.getBook1().setAvailable(false);
+             System.out.println("approved " + l.toString());
+             l.setApprovedByLibrarian(loginLibrarian().getUsername());
 
          }
         System.out.println("all loan requests approved ");
@@ -322,9 +325,9 @@ public class LibrarySystem implements Serializable {
         String username = scanner.nextLine();
         List<Loan1> result = new ArrayList<>();
 
-        for (Student1 s : students) {
-            if (s.getUsername().equals(username)) {
-                result = s.getLoan1s();
+        for (Loan1 s : loans) {
+            if (s.getStudent1().getUsername().equals(username)) {
+                result.add(s);
             }
         }
         if(result.isEmpty()) {
@@ -386,6 +389,7 @@ public class LibrarySystem implements Serializable {
                 if (l.getBook1().getName().equals(title) &&l.getReturnDate() == null && l.isApproved()) {
                     l.setReturnDate(LocalDate.now());
                     l.getBook1().setAvailable(true);
+                    l.setReturnedByLibrarian(loginLibrarian().getUsername());
                     saveloans();
                     found = true;
                     System.out.println("student returned successfully");
@@ -414,6 +418,36 @@ public class LibrarySystem implements Serializable {
         librarians.add(librarian);
         System.out.println("librarians added successfully");
         savelibrarian();
+    }
+
+    public void viewLibrarianStatus() {
+        int added =0;
+        int returned =0;
+        int approved =0;
+        Librarian1 lib=null;
+        System.out.println("enter librarian username: ");
+        String username = scanner.nextLine();
+        for (Librarian1 l : librarians) {
+            if (l.getUsername().equals(username)) {
+                lib = l;
+            }
+        }
+        if (lib == null) {
+            System.out.println("librarian user notfound");
+            return;
+        }
+        for (Book1 b : books) {
+            if (b.getAddedByLibrarian() != null &&b.getAddedByLibrarian().equals(username)) {added++ ;}
+        }
+        for (Loan1 l : loans) {
+            if (l.getApprovedByLibrarian() != null &&l.getApprovedByLibrarian().equals(username)) {approved++;}
+            if (l.getReturnedByLibrarian() != null &&l.getReturnedByLibrarian().equals(username)) {returned++;}
+        }
+        System.out.println("librarian"+username+"report: ");
+        System.out.println("book added: "+added);
+        System.out.println("approved loans: "+approved);
+        System.out.println("returned loans: "+returned);
+
     }
 }
 

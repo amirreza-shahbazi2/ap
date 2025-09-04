@@ -11,13 +11,26 @@ public class Loan1 implements Serializable {
     private LocalDate endDate;
     private LocalDate returnDate;
     private boolean approved;
+    private String approvedByLibrarian;
+    private String returnedByLibrarian;
     public Loan1(Book1 book1, Student1 student1, LocalDate startDate, LocalDate endDate) {
         this.book1 = book1;
         this.student1 = student1;
         this.startDate = startDate;
         this.endDate = endDate;
-//        this.returnDate = returnDate;
         this.approved = false;
+    }
+    public String getApprovedByLibrarian() {
+        return approvedByLibrarian;
+    }
+    public void setApprovedByLibrarian(String username) {
+        this.approvedByLibrarian = username;
+    }
+    public String getReturnedByLibrarian() {
+        return returnedByLibrarian;
+    }
+    public void setReturnedByLibrarian(String username) {
+        this.returnedByLibrarian = username;
     }
     public Book1 getBook1() {
         return book1;

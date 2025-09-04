@@ -5,12 +5,16 @@ public class Book1 {
     private String author;
     private int publicyear;
     private boolean available = true;
-//    private int borrowcount = 0;
+    private String addedByLibrarian;
 
-    public Book1(String name, String author, int publicyear) {
+    public Book1(String name, String author, int publicyear,String addedByLibrarian) {
         this.name = name;
         this.author = author;
         this.publicyear = publicyear;
+        this.addedByLibrarian = addedByLibrarian;
+    }
+    public String getAddedByLibrarian(){
+        return addedByLibrarian;
     }
 
     public String getName() {
@@ -44,9 +48,6 @@ public class Book1 {
     public void setAvailable(boolean available) {
         this.available = available;
     }
-//    public void increaseborrowcount() {
-//        borrowcount++;
-//    }
 
     public String toString() {
         return "name of the Book:" + getName() + " | author of the Book:" + getAuthor() +

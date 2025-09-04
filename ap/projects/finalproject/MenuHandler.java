@@ -64,12 +64,13 @@ public class MenuHandler {
         System.out.println("4. view statistical info about students");
         System.out.println("5. exit");
         System.out.print("Please enter your choice: ");
-        int choice = getIntInput(1, 4);
+        int choice = getIntInput(1, 5);
         switch (choice) {
             case 1:
                 librarySystem.addLibrarian();
                 break;
             case 2:
+                librarySystem.viewLibrarianStatus();
 
                 break;
             case 3:
@@ -100,7 +101,7 @@ public class MenuHandler {
         System.out.println("7. receive returned books");
         System.out.println("8. exit");
         System.out.print("Please enter your choice: ");
-        int choice = getIntInput(1, 7);
+        int choice = getIntInput(1, 8);
         switch (choice) {
             case 1:
                 librarySystem.changePassword();
