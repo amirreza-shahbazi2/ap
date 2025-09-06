@@ -78,6 +78,7 @@ public class MenuHandler {
 
                 break;
             case 4:
+                librarySystem.viewStudentStatics();
 
                 break;
             case 5:

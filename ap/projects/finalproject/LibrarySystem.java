@@ -1,10 +1,10 @@
 package ap.projects.finalproject;
 
+import ap.projects.Student;
+
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class LibrarySystem implements Serializable {
     Scanner scanner = new Scanner(System.in);
@@ -487,6 +487,47 @@ public class LibrarySystem implements Serializable {
 
     }
 
+    public void viewStudentStatics() {
+        if (students == null) {
+            System.out.println("no students found");
+            return;
+        }
+        Map<Student1,Long> delayedCountMap = new HashMap<>();
+
+        for (Student1 s : students) {
+            long totalloans = 0;
+            for (Loan1 l : loans) {
+                if (l.getStudent1().getUsername().equals(s.getUsername())) {
+                    totalloans ++;
+
+                }
+            }
+
+            long totalnotreturned = loans.stream().filter(ab -> ab.getStudent1().getUsername()
+                            .equals(s.getUsername()) && ab.isApproved() && ab.getReturnDate() == null)
+                    .count();
+            long tataldelayed = loans.stream().filter(ab -> ab.getStudent1().getUsername()
+                            .equals(s.getUsername()) && ab.isApproved() && ab.getReturnDate() != null
+                            && ab.getReturnDate().isAfter(ab.getEndDate()))
+                    .count();
+            delayedCountMap.put(s, tataldelayed);
+
+            System.out.println("total loans: " + totalloans);
+            System.out.println("total not returned: " +totalnotreturned);
+            System.out.println("total deleyed loans: "+tataldelayed);
+
+        }
+        System.out.println("Top 10 Delayed Returns students ");
+        delayedCountMap.entrySet().stream()
+                .sorted(Map.Entry.<Student1,Long>comparingByValue().reversed())
+                .limit(10)
+                .forEach(entry -> {
+                    Student1 st = entry.getKey();
+                    long count = entry.getValue();
+                    System.out.println(st.getUsername() + "Delayed Returns : " + count);
+                });
+
+    }
 }
 
 
