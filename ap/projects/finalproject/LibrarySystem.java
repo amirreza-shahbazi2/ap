@@ -1,6 +1,6 @@
 package ap.projects.finalproject;
 
-import java.io.Serializable;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -137,7 +137,7 @@ public class LibrarySystem implements Serializable {
             return;
         }
         LocalDate today = LocalDate.now();
-        System.out.println("today id: "+today);
+        System.out.println("today id: " + today);
 
         System.out.println("Enter start date (YYYY-MM-DD) : ");
         LocalDate start = LocalDate.parse(scanner.nextLine());
@@ -184,7 +184,7 @@ public class LibrarySystem implements Serializable {
             }
             System.out.println("count of books which borrowed: " + activloans.size());
             for (Loan1 l : activloans) {
-                System.out.println("book name: "+l.getBook1().getName() + " (student: " + l.getStudent1().getName()+")");
+                System.out.println("book name: " + l.getBook1().getName() + " (student: " + l.getStudent1().getName() + ")");
 
             }
         }
@@ -217,7 +217,8 @@ public class LibrarySystem implements Serializable {
                 l.setPassword(newPassword);
                 found = true;
                 System.out.println("your password has been changed ");
-                savelibrarian();
+
+                saveLibrarianToFile();
             }
         }
         if (!found) {
@@ -230,18 +231,19 @@ public class LibrarySystem implements Serializable {
         String name = scanner.nextLine();
         System.out.println("enter the author of the book: ");
         String author = scanner.nextLine();
-       for (Book1 b : books) {
-           if (b.getName().equals(name)&& b.getAuthor().equals(author)) {
-               System.out.println("book already exists");
-               return;
-           }
-       }
+        for (Book1 b : books) {
+            if (b.getName().equals(name) && b.getAuthor().equals(author)) {
+                System.out.println("book already exists");
+                return;
+            }
+        }
         System.out.println("Enter the year of publication of the book: ");
         int year = Integer.parseInt(scanner.nextLine());
         Book1 newbook = new Book1(name, author, year, loginLibrarian().getUsername());
         books.add(newbook);
         System.out.println("book added successfully");
-        savebook();
+
+        saveBookTofile();
     }
 
     public void searchandEditbookInfo() {
@@ -289,35 +291,37 @@ public class LibrarySystem implements Serializable {
                 System.out.println("Invalid option");
                 break;
         }
-        savebook();
+
+        saveBookTofile();
         System.out.println("book edited successfully");
 
     }
 
     public void approveLoan() {
-         LocalDate today = LocalDate.now();
-         List<Loan1> result = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        List<Loan1> result = new ArrayList<>();
 
-         for (Loan1 l : loans) {
-             if (!l.isApproved() && l.getReturnDate() == null) {
-                 if (l.getStartDate().equals(today) || l.getStartDate().equals(today.minusDays(1))) {
-                  result.add(l);
-                 }
+        for (Loan1 l : loans) {
+            if (!l.isApproved() && l.getReturnDate() == null) {
+                if (l.getStartDate().equals(today) || l.getStartDate().equals(today.minusDays(1))) {
+                    result.add(l);
+                }
 
-             }
-         }
-         if (result.isEmpty()) {
-             System.out.println("No book request loan.");
-         }
-         for (Loan1 l : result) {
-             l.setApprovedtrue();
-             l.getBook1().setAvailable(false);
-             System.out.println("approved " + l.toString());
-             l.setApprovedByLibrarian(loginLibrarian().getUsername());
+            }
+        }
+        if (result.isEmpty()) {
+            System.out.println("No book request loan.");
+        }
+        for (Loan1 l : result) {
+            l.setApprovedtrue();
+            l.getBook1().setAvailable(false);
+            System.out.println("approved " + l.toString());
+            l.setApprovedByLibrarian(loginLibrarian().getUsername());
 
-         }
+        }
         System.out.println("all loan requests approved ");
          saveloans();
+
     }
 
     public void studentLoanHistory() {
@@ -330,18 +334,18 @@ public class LibrarySystem implements Serializable {
                 result.add(s);
             }
         }
-        if(result.isEmpty()) {
+        if (result.isEmpty()) {
             System.out.println("No history found");
             return;
         }
-        int total=result.size();
-        int delayed=0;
-        int notReturned=0;
+        int total = result.size();
+        int delayed = 0;
+        int notReturned = 0;
         System.out.println("*** Student loan History : " + username + " ***");
 
         for (Loan1 l : result) {
             System.out.println(l.toString());
-            if (l.isApproved()&& l.getReturnDate() == null) {
+            if (l.isApproved() && l.getReturnDate() == null) {
                 notReturned++;
             }
             if (l.getReturnDate() != null && l.getReturnDate().isAfter(l.getEndDate())) {
@@ -371,7 +375,8 @@ public class LibrarySystem implements Serializable {
         }
         Student1 student = students.get(choice - 1);
         student.setActive(!student.isActive());
-        saveStudent();
+
+        saveStudents();
         System.out.println("student status changed successfully ");
 
 
@@ -386,11 +391,12 @@ public class LibrarySystem implements Serializable {
 
         for (Loan1 l : loans) {
             if (l.getStudent1().getUsername().equals(username)) {
-                if (l.getBook1().getName().equals(title) &&l.getReturnDate() == null && l.isApproved()) {
+                if (l.getBook1().getName().equals(title) && l.getReturnDate() == null && l.isApproved()) {
                     l.setReturnDate(LocalDate.now());
                     l.getBook1().setAvailable(true);
                     l.setReturnedByLibrarian(loginLibrarian().getUsername());
                     saveloans();
+
                     found = true;
                     System.out.println("student returned successfully");
                 }
@@ -414,17 +420,17 @@ public class LibrarySystem implements Serializable {
                 return;
             }
         }
-        Librarian1 librarian = new Librarian1( username, password);
+        Librarian1 librarian = new Librarian1(username, password);
         librarians.add(librarian);
         System.out.println("librarians added successfully");
-        savelibrarian();
+        saveLibrarianToFile();
     }
 
     public void viewLibrarianStatus() {
-        int added =0;
-        int returned =0;
-        int approved =0;
-        Librarian1 lib=null;
+        int added = 0;
+        int returned = 0;
+        int approved = 0;
+        Librarian1 lib = null;
         System.out.println("enter librarian username: ");
         String username = scanner.nextLine();
         for (Librarian1 l : librarians) {
@@ -437,18 +443,50 @@ public class LibrarySystem implements Serializable {
             return;
         }
         for (Book1 b : books) {
-            if (b.getAddedByLibrarian() != null &&b.getAddedByLibrarian().equals(username)) {added++ ;}
+            if (b.getAddedByLibrarian() != null && b.getAddedByLibrarian().equals(username)) {
+                added++;
+            }
         }
         for (Loan1 l : loans) {
-            if (l.getApprovedByLibrarian() != null &&l.getApprovedByLibrarian().equals(username)) {approved++;}
-            if (l.getReturnedByLibrarian() != null &&l.getReturnedByLibrarian().equals(username)) {returned++;}
+            if (l.getApprovedByLibrarian() != null && l.getApprovedByLibrarian().equals(username)) {
+                approved++;
+            }
+            if (l.getReturnedByLibrarian() != null && l.getReturnedByLibrarian().equals(username)) {
+                returned++;
+            }
         }
-        System.out.println("librarian"+username+"report: ");
-        System.out.println("book added: "+added);
-        System.out.println("approved loans: "+approved);
-        System.out.println("returned loans: "+returned);
+        System.out.println("librarian  " + username + "  report: ");
+        System.out.println("book added: " + added);
+        System.out.println("approved loans: " + approved);
+        System.out.println("returned loans: " + returned);
 
     }
+
+    public void viewLoanStatistics() {
+        int totalLoans = loans.size();
+        int totalApproved = 0;
+        int totalReturned = 0;
+        long totalDays = 0;
+        int d=0;
+        for (Loan1 l : loans) {
+            if (l.isApproved() || l.getReturnDate() != null) {
+                totalApproved++;
+            }
+            if (l.getReturnDate() != null) {
+                totalReturned++;
+
+                long diff = l.getReturnDate().getDayOfYear() - l.getStartDate().getDayOfYear();
+                totalDays += diff;
+            }
+        }
+
+        double avg = (totalReturned > 0) ? (double) totalDays / totalReturned : 0;
+        System.out.println("total loans: " + totalLoans);
+        System.out.println("total approved loans: " + totalApproved);
+        System.out.printf(" \n Avg days of loan : %.2f%n", avg);
+
+    }
+
 }
 
 

@@ -74,6 +74,7 @@ public class MenuHandler {
 
                 break;
             case 3:
+                librarySystem.viewLoanStatistics();
 
                 break;
             case 4:
