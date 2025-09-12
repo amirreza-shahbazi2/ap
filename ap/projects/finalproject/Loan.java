@@ -2,20 +2,19 @@ package ap.projects.finalproject;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
-public class Loan1 implements Serializable {
-    private Book1 book1;
-    private Student1 student1;
+public class Loan implements Serializable {
+    private Book book;
+    private Student student;
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate returnDate;
     private boolean approved;
     private String approvedByLibrarian;
     private String returnedByLibrarian;
-    public Loan1(Book1 book1, Student1 student1, LocalDate startDate, LocalDate endDate) {
-        this.book1 = book1;
-        this.student1 = student1;
+    public Loan(Book book, Student student, LocalDate startDate, LocalDate endDate) {
+        this.book = book;
+        this.student = student;
         this.startDate = startDate;
         this.endDate = endDate;
         this.approved = false;
@@ -32,11 +31,11 @@ public class Loan1 implements Serializable {
     public void setReturnedByLibrarian(String username) {
         this.returnedByLibrarian = username;
     }
-    public Book1 getBook1() {
-        return book1;
+    public Book getBook1() {
+        return book;
     }
-    public Student1 getStudent1() {
-        return student1;
+    public Student getStudent1() {
+        return student;
     }
     public LocalDate getStartDate() {
         return startDate;
@@ -53,15 +52,13 @@ public class Loan1 implements Serializable {
     public boolean isApproved() {
         return approved;
     }
-    public void setApprovedtrue() {
-        this.approved = true;
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
-    public void setApprovedfalse() {
-        this.approved = false;
-    }
+
     public String toString() {
-        return "requestloan: "+"| student: "+student1.getName()+
-                " | book: "+book1.getName()+ " | startdate: "+getStartDate()+
+        return "requestloan: "+"| student: "+ student.getName()+
+                " | book: "+ book.getName()+ " | startdate: "+getStartDate()+
                 " | end date: "+getEndDate()+ " | is approved: "+ (isApproved() ? "Yes" : "No");
 
     }

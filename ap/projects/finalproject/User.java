@@ -1,6 +1,8 @@
 package ap.projects.finalproject;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     protected String username;
     protected String password;
     protected boolean active=true;

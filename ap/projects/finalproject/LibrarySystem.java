@@ -1,7 +1,5 @@
 package ap.projects.finalproject;
 
-import ap.projects.Student;
-
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -9,37 +7,42 @@ import java.util.*;
 public class LibrarySystem implements Serializable {
     Scanner scanner = new Scanner(System.in);
     private List<User> users = new ArrayList<>();
-    private List<Book1> books = new ArrayList<>();
-    private List<Student1> students = new ArrayList<>();
-    private List<Librarian1> librarians = new ArrayList<>();
-    private List<Loan1> loans = new ArrayList<>();
-    private Manager1 manager1;
+    private List<Book> books = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
+    private List<Librarian> librarians = new ArrayList<>();
+    private List<Loan> loans = new ArrayList<>();
+    private Manager manager;
+    LibraryPersistence libraryPersistence = new LibraryPersistence();
 
-//
-//    public void registerbook(String name, String author, int year) {
-//        books.add(new Book1(name, author, year));
-//    }
+    public void setLibrarians(List<Librarian> librarians) {
+        this.librarians = librarians;
+    }
 
-    //    public User login(String username,String password){
-//        for(Student1 s:students){
-//            if(s.getUsername().equals(username) && s.getPassword().equals(password)){
-//                return s;
-//            }
-//        }
-//        return null;
-//    }
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
     public void registerStudent(String name, String studentId, String username, String password) {
         if (isUsernameTaken(username)) {
             System.out.println("This username already exists. Please choose a different username.");
             return;
         }
 
-        Student1 newStudent = new Student1(name, studentId, username, password);
+        Student newStudent = new Student(name, studentId, username, password);
         students.add(newStudent);
         System.out.println("Student registration completed successfully.");
+        libraryPersistence.saveStudents(students);
     }
 
-    public Student1 authenticateStudent(String username, String password) {
+    public Student authenticateStudent(String username, String password) {
         return students.stream()
                 .filter(s -> s.getUsername().equals(username) && s.getPassword().equals(password)
                         && s.isActive())
@@ -55,7 +58,7 @@ public class LibrarySystem implements Serializable {
             return;
         }
 
-        for (Student1 student : students) {
+        for (Student student : students) {
             System.out.println(student.toString());
         }
     }
@@ -79,7 +82,7 @@ public class LibrarySystem implements Serializable {
         String Publicyear = scanner.nextLine().trim();
 
         boolean found = false;
-        for (Book1 b : books) {
+        for (Book b : books) {
             boolean synk = false;
             if (!title.isEmpty() && b.getName().toLowerCase().contains(title)) {
                 synk = true;
@@ -105,8 +108,8 @@ public class LibrarySystem implements Serializable {
         }
     }
 
-    public Student1 searchStudentbyID(String studentId) {
-        for (Student1 student : students) {
+    public Student searchStudentbyID(String studentId) {
+        for (Student student : students) {
             if (student.getStudentId().equals(studentId)) {
                 return student;
             }
@@ -114,7 +117,7 @@ public class LibrarySystem implements Serializable {
         return null;
     }
 
-    public void requestLoan(Student1 student) {
+    public void requestLoan(Student student) {
         if (!student.isActive()) {
             System.out.println("This student is not active");
             return;
@@ -131,7 +134,7 @@ public class LibrarySystem implements Serializable {
             return;
         }
 
-        Book1 thebook = books.get(choice);
+        Book thebook = books.get(choice);
         if (!thebook.isAvailable()) {
             System.out.println("book is not available ");
             return;
@@ -144,13 +147,14 @@ public class LibrarySystem implements Serializable {
         System.out.println("Enter end date (YYYY-MM-DD) : ");
         LocalDate end = LocalDate.parse(scanner.nextLine());
 
-        Loan1 request = new Loan1(thebook, student, start, end);
+        Loan request = new Loan(thebook, student, start, end);
         loans.add(request);
         System.out.println("Your request has been registered and is under rewie .");
+        libraryPersistence.saveLoans(loans);
 
     }
 
-    public List<Loan1> getLoansRequest() {
+    public List<Loan> getLoansRequest() {
         return loans;
     }
 
@@ -158,7 +162,7 @@ public class LibrarySystem implements Serializable {
         System.out.println("enter the title of the book");
         String title = scanner.nextLine().toLowerCase();
         boolean found = false;
-        for (Book1 b : books) {
+        for (Book b : books) {
             if (b.getName().toLowerCase().equals(title)) {
                 System.out.println(b.toStringGuest());
                 found = true;
@@ -176,27 +180,27 @@ public class LibrarySystem implements Serializable {
         if (loans.isEmpty()) {
             System.out.println("No book borrowed.");
         } else {
-            List<Loan1> activloans = new ArrayList<>();
-            for (Loan1 loan : loans) {
+            List<Loan> activloans = new ArrayList<>();
+            for (Loan loan : loans) {
                 if (loan.isApproved() && loan.getReturnDate() == null) {
                     activloans.add(loan);
                 }
             }
             System.out.println("count of books which borrowed: " + activloans.size());
-            for (Loan1 l : activloans) {
+            for (Loan l : activloans) {
                 System.out.println("book name: " + l.getBook1().getName() + " (student: " + l.getStudent1().getName() + ")");
 
             }
         }
     }
 
-    public Librarian1 loginLibrarian() {
+    public Librarian loginLibrarian() {
         System.out.println("enter your username: ");
         String username = scanner.nextLine();
         System.out.println("Enter password : ");
         String password = scanner.nextLine();
 
-        for (Librarian1 l : librarians) {
+        for (Librarian l : librarians) {
             if (l.getUsername().equals(username) && l.getPassword().equals(password)) {
                 System.out.println(" librarian" + l.getUsername() + "entered in successfully ");
                 return l;
@@ -212,13 +216,13 @@ public class LibrarySystem implements Serializable {
         System.out.println("Enter new password : ");
         String newPassword = scanner.nextLine();
         boolean found = false;
-        for (Librarian1 l : librarians) {
+        for (Librarian l : librarians) {
             if (l.getPassword().equals(password)) {
                 l.setPassword(newPassword);
                 found = true;
                 System.out.println("your password has been changed ");
 
-                saveLibrarianToFile();
+                libraryPersistence.saveLibrarianToFile(librarians);
             }
         }
         if (!found) {
@@ -231,7 +235,7 @@ public class LibrarySystem implements Serializable {
         String name = scanner.nextLine();
         System.out.println("enter the author of the book: ");
         String author = scanner.nextLine();
-        for (Book1 b : books) {
+        for (Book b : books) {
             if (b.getName().equals(name) && b.getAuthor().equals(author)) {
                 System.out.println("book already exists");
                 return;
@@ -239,19 +243,19 @@ public class LibrarySystem implements Serializable {
         }
         System.out.println("Enter the year of publication of the book: ");
         int year = Integer.parseInt(scanner.nextLine());
-        Book1 newbook = new Book1(name, author, year, loginLibrarian().getUsername());
+        Book newbook = new Book(name, author, year, loginLibrarian().getUsername());
         books.add(newbook);
         System.out.println("book added successfully");
 
-        saveBookTofile();
+        libraryPersistence.saveBooks(books);
     }
 
     public void searchandEditbookInfo() {
         System.out.println("enter the name of the book: ");
         String name = scanner.nextLine();
-        Book1 theboook = null;
+        Book theboook = null;
         boolean found = false;
-        for (Book1 b : books) {
+        for (Book b : books) {
             if (b.getName().equals(name)) {
                 theboook = b;
                 System.out.println(b.toString());
@@ -291,17 +295,17 @@ public class LibrarySystem implements Serializable {
                 System.out.println("Invalid option");
                 break;
         }
+        libraryPersistence.saveBooks(books);
 
-        saveBookTofile();
         System.out.println("book edited successfully");
 
     }
 
     public void approveLoan() {
         LocalDate today = LocalDate.now();
-        List<Loan1> result = new ArrayList<>();
+        List<Loan> result = new ArrayList<>();
 
-        for (Loan1 l : loans) {
+        for (Loan l : loans) {
             if (!l.isApproved() && l.getReturnDate() == null) {
                 if (l.getStartDate().equals(today) || l.getStartDate().equals(today.minusDays(1))) {
                     result.add(l);
@@ -312,24 +316,24 @@ public class LibrarySystem implements Serializable {
         if (result.isEmpty()) {
             System.out.println("No book request loan.");
         }
-        for (Loan1 l : result) {
-            l.setApprovedtrue();
+        for (Loan l : result) {
+            l.setApproved(true);
             l.getBook1().setAvailable(false);
             System.out.println("approved " + l.toString());
             l.setApprovedByLibrarian(loginLibrarian().getUsername());
 
         }
         System.out.println("all loan requests approved ");
-         saveloans();
+        setLoans(loans);
 
     }
 
     public void studentLoanHistory() {
         System.out.println("enter the username of the student: ");
         String username = scanner.nextLine();
-        List<Loan1> result = new ArrayList<>();
+        List<Loan> result = new ArrayList<>();
 
-        for (Loan1 s : loans) {
+        for (Loan s : loans) {
             if (s.getStudent1().getUsername().equals(username)) {
                 result.add(s);
             }
@@ -343,7 +347,7 @@ public class LibrarySystem implements Serializable {
         int notReturned = 0;
         System.out.println("*** Student loan History : " + username + " ***");
 
-        for (Loan1 l : result) {
+        for (Loan l : result) {
             System.out.println(l.toString());
             if (l.isApproved() && l.getReturnDate() == null) {
                 notReturned++;
@@ -359,7 +363,7 @@ public class LibrarySystem implements Serializable {
 
     public void toggleStudentStatus() {
         for (int i = 0; i < students.size(); i++) {
-            Student1 s = students.get(i);
+            Student s = students.get(i);
             System.out.println(i + 1 + ". " + s.getUsername() + " | is active: " + s.isActive());
 
         }
@@ -373,10 +377,10 @@ public class LibrarySystem implements Serializable {
             System.out.println("Invalid choice . ");
             return;
         }
-        Student1 student = students.get(choice - 1);
+        Student student = students.get(choice - 1);
         student.setActive(!student.isActive());
 
-        saveStudents();
+        libraryPersistence.saveStudents(students);
         System.out.println("student status changed successfully ");
 
 
@@ -389,13 +393,14 @@ public class LibrarySystem implements Serializable {
         String title = scanner.nextLine();
         boolean found = false;
 
-        for (Loan1 l : loans) {
+        for (Loan l : loans) {
             if (l.getStudent1().getUsername().equals(username)) {
                 if (l.getBook1().getName().equals(title) && l.getReturnDate() == null && l.isApproved()) {
                     l.setReturnDate(LocalDate.now());
                     l.getBook1().setAvailable(true);
                     l.setReturnedByLibrarian(loginLibrarian().getUsername());
-                    saveloans();
+
+                    libraryPersistence.saveLoans(loans);
 
                     found = true;
                     System.out.println("student returned successfully");
@@ -414,26 +419,26 @@ public class LibrarySystem implements Serializable {
         System.out.println("enter librarian's password: ");
         String password = scanner.nextLine();
 
-        for (Librarian1 l : librarians) {
+        for (Librarian l : librarians) {
             if (l.getUsername().equals(username) && l.getPassword().equals(password)) {
                 System.out.println("librarian's  already exists");
                 return;
             }
         }
-        Librarian1 librarian = new Librarian1(username, password);
+        Librarian librarian = new Librarian(username, password);
         librarians.add(librarian);
         System.out.println("librarians added successfully");
-        saveLibrarianToFile();
+        libraryPersistence.saveLibrarianToFile(librarians);
     }
 
     public void viewLibrarianStatus() {
         int added = 0;
         int returned = 0;
         int approved = 0;
-        Librarian1 lib = null;
+        Librarian lib = null;
         System.out.println("enter librarian username: ");
         String username = scanner.nextLine();
-        for (Librarian1 l : librarians) {
+        for (Librarian l : librarians) {
             if (l.getUsername().equals(username)) {
                 lib = l;
             }
@@ -442,12 +447,12 @@ public class LibrarySystem implements Serializable {
             System.out.println("librarian user notfound");
             return;
         }
-        for (Book1 b : books) {
+        for (Book b : books) {
             if (b.getAddedByLibrarian() != null && b.getAddedByLibrarian().equals(username)) {
                 added++;
             }
         }
-        for (Loan1 l : loans) {
+        for (Loan l : loans) {
             if (l.getApprovedByLibrarian() != null && l.getApprovedByLibrarian().equals(username)) {
                 approved++;
             }
@@ -467,8 +472,8 @@ public class LibrarySystem implements Serializable {
         int totalApproved = 0;
         int totalReturned = 0;
         long totalDays = 0;
-        int d=0;
-        for (Loan1 l : loans) {
+        int d = 0;
+        for (Loan l : loans) {
             if (l.isApproved() || l.getReturnDate() != null) {
                 totalApproved++;
             }
@@ -492,13 +497,13 @@ public class LibrarySystem implements Serializable {
             System.out.println("no students found");
             return;
         }
-        Map<Student1,Long> delayedCountMap = new HashMap<>();
+        Map<Student, Long> delayedCountMap = new HashMap<>();
 
-        for (Student1 s : students) {
+        for (Student s : students) {
             long totalloans = 0;
-            for (Loan1 l : loans) {
+            for (Loan l : loans) {
                 if (l.getStudent1().getUsername().equals(s.getUsername())) {
-                    totalloans ++;
+                    totalloans++;
 
                 }
             }
@@ -511,23 +516,23 @@ public class LibrarySystem implements Serializable {
                             && ab.getReturnDate().isAfter(ab.getEndDate()))
                     .count();
             delayedCountMap.put(s, tataldelayed);
+            System.out.println("student: " + s.getUsername());
 
             System.out.println("total loans: " + totalloans);
-            System.out.println("total not returned: " +totalnotreturned);
-            System.out.println("total deleyed loans: "+tataldelayed);
+            System.out.println("total not returned: " + totalnotreturned);
+            System.out.println("total deleyed loans: " + tataldelayed);
+            System.out.println("--------------------------------");
 
         }
         System.out.println("Top 10 Delayed Returns students ");
         delayedCountMap.entrySet().stream()
-                .sorted(Map.Entry.<Student1,Long>comparingByValue().reversed())
+                .sorted(Map.Entry.<Student, Long>comparingByValue().reversed())
                 .limit(10)
                 .forEach(entry -> {
-                    Student1 st = entry.getKey();
+                    Student st = entry.getKey();
                     long count = entry.getValue();
-                    System.out.println(st.getUsername() + "Delayed Returns : " + count);
+                    System.out.println("student: " + st.getUsername() + " (Delayed Returns : " + count + ")");
                 });
 
     }
 }
-
-

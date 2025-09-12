@@ -1,13 +1,15 @@
 package ap.projects.finalproject;
 
-public class Book1 {
+import java.io.Serializable;
+
+public class Book implements Serializable {
     private String name;
     private String author;
     private int publicyear;
     private boolean available = true;
     private String addedByLibrarian;
 
-    public Book1(String name, String author, int publicyear,String addedByLibrarian) {
+    public Book(String name, String author, int publicyear, String addedByLibrarian) {
         this.name = name;
         this.author = author;
         this.publicyear = publicyear;

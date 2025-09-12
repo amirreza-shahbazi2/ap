@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class MenuHandler {
     private Scanner scanner;
     private LibrarySystem librarySystem;
-    private Student1 currentUser;
+    private Student currentUser;
 
     public MenuHandler(LibrarySystem librarySystem) {
         this.scanner = new Scanner(System.in);
@@ -38,7 +38,7 @@ public class MenuHandler {
                     displayguestmenu();
                     break;
                 case 4:
-                    Librarian1 l = librarySystem.loginLibrarian();
+                    Librarian l = librarySystem.loginLibrarian();
                     if (l != null) {
                         dispaylibrarianmenu();
                     }
@@ -57,112 +57,115 @@ public class MenuHandler {
     }
 
     private void displaymanagermenu() {
-        System.out.println("\n--- manager menu ---");
-        System.out.println("1. add new librarian");
-        System.out.println("2. view librarian status");
-        System.out.println("3. view statistical info about book loans");
-        System.out.println("4. view statistical info about students");
-        System.out.println("5. exit");
-        System.out.print("Please enter your choice: ");
-        int choice = getIntInput(1, 5);
-        switch (choice) {
-            case 1:
-                librarySystem.addLibrarian();
-                break;
-            case 2:
-                librarySystem.viewLibrarianStatus();
+        while (true) {
+            System.out.println("\n--- manager menu ---");
+            System.out.println("1. add new librarian");
+            System.out.println("2. view librarian status");
+            System.out.println("3. view statistical info about book loans");
+            System.out.println("4. view statistical info about students");
+            System.out.println("5. exit");
+            System.out.print("Please enter your choice: ");
+            int choice = getIntInput(1, 5);
+            switch (choice) {
+                case 1:
+                    librarySystem.addLibrarian();
+                    break;
+                case 2:
+                    librarySystem.viewLibrarianStatus();
 
-                break;
-            case 3:
-                librarySystem.viewLoanStatistics();
+                    break;
+                case 3:
+                    librarySystem.viewLoanStatistics();
 
-                break;
-            case 4:
-                librarySystem.viewStudentStatics();
+                    break;
+                case 4:
+                    librarySystem.viewStudentStatics();
 
-                break;
-            case 5:
-                System.out.println("Exiting system. Goodbye!");
-                return;
-            default:
-                System.out.println("Invalid option! Please try again.");
+                    break;
+                case 5:
+                    System.out.println("Exiting system. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid option! Please try again.");
+            }
+            System.out.println("___________________________");
+
         }
-        System.out.println("___________________________");
-
-
     }
 
     private void dispaylibrarianmenu() {
-        System.out.println("\n=== Librarian menu ===");
-        System.out.println("1. change password");
-        System.out.println("2. register a new book ");
-        System.out.println("3. search and edit book information");
-        System.out.println("4. approve loan request");
-        System.out.println("5. view students loan history and stats of students");
-        System.out.println("6. active or di active students");
-        System.out.println("7. receive returned books");
-        System.out.println("8. exit");
-        System.out.print("Please enter your choice: ");
-        int choice = getIntInput(1, 8);
-        switch (choice) {
-            case 1:
-                librarySystem.changePassword();
-                break;
-            case 2:
-                librarySystem.addanewabook();
-                break;
-            case 3:
-                librarySystem.searchandEditbookInfo();
-                break;
-            case 4:
-                librarySystem.approveLoan();
-                break;
-            case 5:
-                librarySystem.studentLoanHistory();
-                break;
-            case 6:
-                librarySystem.toggleStudentStatus();
-                break;
-            case 7:
-                librarySystem.receiveReturnBook();
-                break;
-            case 8:
-                System.out.println("Exiting system. Goodbye!");
-                return;
-            default:
-                System.out.println("Invalid option! Please try again.");
+        while (true) {
+            System.out.println("\n=== Librarian menu ===");
+            System.out.println("1. change password");
+            System.out.println("2. register a new book ");
+            System.out.println("3. search and edit book information");
+            System.out.println("4. approve loan request");
+            System.out.println("5. view students loan history and stats of students");
+            System.out.println("6. active or di active students");
+            System.out.println("7. receive returned books");
+            System.out.println("8. exit");
+            System.out.print("Please enter your choice: ");
+            int choice = getIntInput(1, 8);
+            switch (choice) {
+                case 1:
+                    librarySystem.changePassword();
+                    break;
+                case 2:
+                    librarySystem.addanewabook();
+                    break;
+                case 3:
+                    librarySystem.searchandEditbookInfo();
+                    break;
+                case 4:
+                    librarySystem.approveLoan();
+                    break;
+                case 5:
+                    librarySystem.studentLoanHistory();
+                    break;
+                case 6:
+                    librarySystem.toggleStudentStatus();
+                    break;
+                case 7:
+                    librarySystem.receiveReturnBook();
+                    break;
+                case 8:
+                    System.out.println("Exiting system. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid option! Please try again.");
+            }
+            System.out.println("___________________________");
         }
-        System.out.println("___________________________");
-
     }
 
     private void displayguestmenu() {
-        System.out.println("\n--- guest menu ---");
-        System.out.println("1. display registered student count");
-        System.out.println("2. search book with title");
-        System.out.println("3. view statistical information");
-        System.out.println("4. exit");
-        System.out.print("Please enter your choice: ");
-        int choice = getIntInput(1, 4);
-        switch (choice) {
-            case 1:
-                displayStudentCount();
-                break;
-            case 2:
-                librarySystem.searchBookwithtitle();
-                break;
-            case 3:
-                librarySystem.wiewStatisticalInfo();
+        while (true) {
+            System.out.println("\n--- guest menu ---");
+            System.out.println("1. display registered student count");
+            System.out.println("2. search book with title");
+            System.out.println("3. view statistical information");
+            System.out.println("4. exit");
+            System.out.print("Please enter your choice: ");
+            int choice = getIntInput(1, 4);
+            switch (choice) {
+                case 1:
+                    displayStudentCount();
+                    break;
+                case 2:
+                    librarySystem.searchBookwithtitle();
+                    break;
+                case 3:
+                    librarySystem.wiewStatisticalInfo();
 
-                break;
-            case 4:
-                System.out.println("Exiting system. Goodbye!");
-                return;
-            default:
-                System.out.println("Invalid option! Please try again.");
+                    break;
+                case 4:
+                    System.out.println("Exiting system. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid option! Please try again.");
+            }
+            System.out.println("___________________________");
         }
-        System.out.println("___________________________");
-
 
     }
 
@@ -204,33 +207,35 @@ public class MenuHandler {
     }
 
     private void displayLoggedInStudentMenu() {
-        System.out.println("\n--- Logged In Student Menu ---");
-        System.out.println("1. search a book");
-        System.out.println("2. loan  book");
-        System.out.println("3. exit");
-        System.out.print("Please enter your choice: ");
+        while (true) {
+            System.out.println("\n--- Logged In Student Menu ---");
+            System.out.println("1. search a book");
+            System.out.println("2. loan  book");
+            System.out.println("3. exit");
+            System.out.print("Please enter your choice: ");
 
-        int choice = getIntInput(1, 4);
+            int choice = getIntInput(1, 3);
 
-        switch (choice) {
-            case 1:
-                librarySystem.searchBook();
-                break;
-            case 2:
-                System.out.println("enter student ID");
-                String studentId = scanner.nextLine();
-                Student1 st = librarySystem.searchStudentbyID(studentId);
-                if (st != null) {
-                    librarySystem.requestLoan(st);
-                } else {
-                    System.out.println("Invalid student ID. Please try again.");
-                }
-                break;
-            case 3:
-                System.out.println("Exiting system. Goodbye!");
-                return;
-            default:
-                System.out.println("Invalid option! Please try again.");
+            switch (choice) {
+                case 1:
+                    librarySystem.searchBook();
+                    break;
+                case 2:
+                    System.out.println("enter student ID");
+                    String studentId = scanner.nextLine();
+                    Student st = librarySystem.searchStudentbyID(studentId);
+                    if (st != null) {
+                        librarySystem.requestLoan(st);
+                    } else {
+                        System.out.println("Invalid student ID. Please try again.");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Exiting system. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid option! Please try again.");
+            }
         }
     }
 

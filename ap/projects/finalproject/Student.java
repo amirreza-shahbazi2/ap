@@ -1,16 +1,12 @@
 package ap.projects.finalproject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
-public class Student1 extends User {
+public class Student extends User implements Serializable {
     String name;
     String studentId;
 
-    private List<Loan1> loan1s =new ArrayList<Loan1>();
-
-
-    public Student1(String name, String studentId, String username, String password) {
+    public Student(String name, String studentId, String username, String password) {
         super(username, password);
         this.name = name;
         this.studentId = studentId;
@@ -30,9 +26,7 @@ public class Student1 extends User {
     public String getPassword() {
         return password;
     }
-    public List<Loan1> getLoan1s() {
-        return loan1s;
-    }
+
 
     public String toString() {
         return "Name: " + this.getName() +
